@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    role: elasticsearch
+  name: elasticsearch
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: elasticsearch
+    spec:
+      initContainers:
+      - name: init-sysctl
+        image: busybox
+        imagePullPolicy: IfNotPresent
+        command: ["sysctl", "-w", "vm.max_map_count=262144"]
+        securityContext:
+          privileged: true
+      containers:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+        securityContext:
+          privileged: false
+          capabilities:
+            add:
+              - IPC_LOCK
+              - SYS_RESOURCE
+        env:
+        - name: CLUSTER_NAME
+          value: "docker-cluster"
+        - name: DISCOVERT_ZEN_MINIMUM_MASTER_NODES
+          value: "1"
+        - name: DISCOVERY_TYPE
+          value: "single-node"
+        - name: XPACK_SECURITY_ENABLED
+          value: "false"
+        - name: XPACK_MONITORING_ENABLED
+          value: "false"
+        - name: XPACK_ML_ENABLED
+          value: "false"
+        - name: XPACK_GRAPH_ENABLED
+          value: "false"
+        - name: XPACK_WATCHER_ENABLED
+          value: "false"
+        - name: ES_JAVA_OPTS
+          value: -Xmx256m -Xms256m
+        ports:
+        - containerPort: 9200
+        - containerPort: 9300
