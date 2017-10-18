@@ -7,7 +7,7 @@ Example to set up entire ELK (Elastic Search, Logstash and Kibana) stack with ku
 
 - VirtualBox
 
-- Minikube or existing kubernetes cluster on AWS, GCE etc.
+- Minikube or any existing kubernetes cluster(aws, gce etc.) up and running
 
 ### How to Run
 
@@ -23,6 +23,12 @@ Example to set up entire ELK (Elastic Search, Logstash and Kibana) stack with ku
 - Run `minikube dashboard` and view logs from all the components
 
 - Run `minikube service kibana`, this will open kibana dashboard in browser
-	- Default username:password = elastic:changeme
+	- Default `username:password = elastic:changeme`
 
 - Logstash is listening for log messages on port 5000 and expecting logs in JSON format
+
+### Cleanup
+
+- Execute `elk_down.sh` script from shell, which will remove all the deployments, services and configMaps
+
+- Run `minikube stop` to stop minikube cluster
