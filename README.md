@@ -32,3 +32,13 @@ Example to set up entire ELK (Elastic Search, Logstash and Kibana) stack with ku
 - Execute `elk_down.sh` script from shell, which will remove all the deployments, services and configMaps
 
 - Run `minikube stop` to stop minikube cluster
+
+
+### Backup
+
+Create k8s PV's /PVC's and mount them in appropriate locations. 
+In PVC you can define the volume to be a storage bucket
+
+Logstash config is already a json file (converted to k8s configmap) witch is versioned automatically in many CI frameworks.
+
+Logstash is to be pointed at a relational DB
